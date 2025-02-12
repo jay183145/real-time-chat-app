@@ -3,19 +3,166 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --color-black: #000000;
+    --color-white: #ffffff;
+    --color-success-1: #e8fdef;
+    --color-success-2: #48a848;
+    --color-success-3: #167639;
+    --color-error-1: #ffe4e2;
+    --color-error-2: #ef4444;
+    --color-error-3: #a13b3b;
+    --color-warning-1: #fff9f2;
+    --color-warning-2: #f4a11c;
+    --color-warning-3: #b75e19;
+    --color-info-1: #cfeaff;
+    --color-info-2: #3493ff;
+    --color-info-3: #044496;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root,
+[data-theme="dark"] {
+    /* Primary Colors */
+    --color-primary-1: #e2f0fb;
+    --color-primary-2: #c2dfff;
+    --color-primary-3: #3493ff;
+    --color-primary-4: #1080ff;
+    --color-primary-5: #0049e8;
+
+    /* Secondary Colors */
+    --color-secondary-1: #2cefff;
+    --color-secondary-2: #00dce6;
+    --color-secondary-3: #00c2cc;
+    --color-secondary-4: #00aab2;
+    --color-secondary-5: #009299;
+
+    /* Special Colors */
+    --color-special-1: #ffffff;
+    --color-special-2: #ffffff;
+    --color-special-3: #ffffff;
+    --color-special-4: #ffffff;
+    --color-special-5: #ffffff;
+
+    /* Linear Gradients */
+    --color-linear-1: linear-gradient(97deg, #009eff 0%, #469cff 53%, #1080ff 100%);
+    --color-linear-2: linear-gradient(360deg, #e0eeff 0%, #ffffff 100%);
+    --color-linear-3: linear-gradient(143deg, #2cefff 0%, #1080ff 100%);
+    --color-linear-4: linear-gradient(180deg, #e5e5e5 0%, #e0eeff 100%);
+    --color-linear-5: linear-gradient(180deg, #e0eeff 0%, #c2dfff 27%, #88a0dc 77.5%, #e0eeff 100%);
+
+    /* Background and UI Colors */
+    --color-page-background: var(--color-primary-1);
+    --color-header-background: var(--color-linear-1);
+    --color-header-foreground: var(--color-white);
+    --color-card-primary: var(--color-linear-3);
+    --color-button-primary: var(--color-linear-3);
+    --color-button-outline-primary: var(--color-linear-3);
+
+    /* Shades and Neutrals */
+    --color-shades-0: var(--color-black);
+    --color-shades-100: var(--color-white);
+    --color-neutral-50: #171717;
+    --color-neutral-100: #262626;
+    --color-neutral-200: #404040;
+    --color-neutral-300: #525252;
+    --color-neutral-400: #737373;
+    --color-neutral-500: #a3a3a3;
+    --color-neutral-600: #d4d4d4;
+    --color-neutral-700: #e5e5e5;
+    --color-neutral-800: #f5f5f5;
+    --color-neutral-900: #fafafa;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+[data-theme="light"] {
+    --color-primary-1: #f1fff8;
+    --color-primary-2: #bffbda;
+    --color-primary-3: #40dd72;
+    --color-primary-4: #00b235;
+    --color-primary-5: #007124;
+    --color-secondary-1: #5ee95a;
+    --color-secondary-2: #4b8c4e;
+    --color-secondary-3: #2cc139;
+    --color-secondary-4: #0e6700;
+    --color-secondary-5: #ffffff;
+    --color-special-1: #889ddc;
+    --color-special-2: #ffffff;
+    --color-special-3: #ffffff;
+    --color-special-4: #ffffff;
+    --color-special-5: #ffffff;
+    --color-linear-1: linear-gradient(180deg, #2cc139 0%, #2cc139 33%, #00b235 66%, #00b235 100%);
+    --color-linear-2: linear-gradient(90deg, #f1fff8 0%, #ffffff 100%);
+    --color-linear-3: linear-gradient(108deg, #f1fff8 -36%, #00b235 48%);
+    --color-linear-4: linear-gradient(97deg, #bffbda 0%, #f1fff8 100%);
+    --color-linear-5: linear-gradient(180deg, #bffbda 0%, #bffbda 27%, #40dd72 77.5%, #bffbda 100%);
+    --color-page-background: var(--color-primary-1);
+    --color-header-foreground: var(--color-white);
+    --color-header-background: var(--color-linear-1);
+    --color-card-primary: linear-gradient(90deg, #2cc139 -30%, #40dd72 68%, #007124 165%);
+    --color-button-primary: linear-gradient(90deg, #2cc139 0%, #2cc139 50%, #00b235 100%);
+    --color-button-outline-primary: var(--color-linear-1);
+    --color-shades-0: var(--color-black);
+    --color-shades-100: var(--color-white);
+    --color-neutral-50: #171717;
+    --color-neutral-100: #262626;
+    --color-neutral-200: #404040;
+    --color-neutral-400: #737373;
+    --color-neutral-300: #525252;
+    --color-neutral-500: #a3a3a3;
+    --color-neutral-600: #d4d4d4;
+    --color-neutral-700: #e5e5e5;
+    --color-neutral-800: #f5f5f5;
+    --color-neutral-900: #fafafa;
 }
+
+/*
+:root,
+[data-theme="darkgreen"] {
+
+  --color-primary-1: #14532d;
+  --color-primary-2: #15803d;
+  --color-primary-3: #22c55e;
+  --color-primary-4: #86efac;
+  --color-primary-5: #dcfce7;
+
+
+  --color-secondary-1: #2d0c6e;
+  --color-secondary-2: #20084d;
+  --color-secondary-3: #160636;
+  --color-secondary-4: #0f0426;
+  --color-secondary-5: #0b031b;
+
+
+  --color-special-1: #000000;
+  --color-special-2: #000000;
+  --color-special-3: #000000;
+  --color-special-4: #000000;
+  --color-special-5: #000000;
+
+
+  --color-linear-1: linear-gradient(90deg, #86efac 2.06%, #15803d 99.91%);
+  --color-linear-2: linear-gradient(113deg, #000 -11.35%, #000 20.73%, #15803d 64.3%, #15803d 105.45%);
+  --color-linear-3: linear-gradient(96deg, #000 0%, #000 100%);
+  --color-linear-4: linear-gradient(96deg, #000 0%, #000 100%);
+  --color-linear-5: linear-gradient(96deg, #000 0%, #000 100%);
+
+
+  --color-page-background: var(--color-black);
+  --color-header-background: linear-gradient(94deg, #171717 4.24%, #000 95.39%);
+  --color-header-foreground: var(--color-white);
+  --color-card-primary: linear-gradient(113deg, #15803d -11.35%, #15803d 20.73%, #000 64.3%, #000 105.45%);
+  --color-button-primary: linear-gradient(90deg, #22c55e 2.06%, #14532d 99.91%);
+  --color-button-outline-primary: var(--color-linear-1);
+
+  --color-shades-0: var(--color-white);
+  --color-shades-100: var(--color-black);
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+}
+*/
