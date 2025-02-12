@@ -1,6 +1,6 @@
 import RootLayout from "@/components/layout"
 import Banner from "@/components/banner"
-// import ChatList from "@/components/home/chat-list"
+import ChatList from "@/components/home/chat-list"
 // import HottestToday from "@/components/home/hottest-today"
 // import Favorite from "@/components/home/favorite"
 
@@ -17,7 +17,7 @@ export default function HomePage() {
                 {/* 收藏列表 */}
                 {/* <Favorite /> */}
                 {/* 聊天室列表 */}
-                {/* <ChatList /> */}
+                <ChatList />
             </div>
         </RootLayout>
     )
