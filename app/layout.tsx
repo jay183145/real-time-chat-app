@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { cookies } from "next/headers"
-import { ThemeName } from "@/utils/theme"
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -26,11 +25,13 @@ export default async function RootLayout({
 }>) {
     const cookieStore = await cookies()
     const currentTheme = cookieStore.get("theme")
-    const currentThemeValue = currentTheme ? currentTheme.value : ThemeName.light
 
     return (
         <html lang="en">
-            <body data-theme={currentThemeValue} className={` ${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <body
+                data-theme={currentTheme?.value}
+                className={` ${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
                 <div className="mx-auto flex h-screen max-w-md flex-col bg-neutral-700">{children}</div>
             </body>
         </html>
