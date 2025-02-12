@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Menu } from "lucide-react"
 import { Switch } from "@/components/switch"
 import { Moon } from "lucide-react"
@@ -11,12 +11,16 @@ type HeaderProps = {
 }
 
 function Header({ title }: HeaderProps) {
-    const [isDark, setIsDark] = useState(getTheme() === ThemeName.dark)
+    const [isDark, setIsDark] = useState(false)
+
+    useEffect(() => {
+        setIsDark(getTheme() === ThemeName.dark)
+    }, [])
 
     const handleThemeChange = () => {
-        const newTheme = isDark ? ThemeName.light : ThemeName.dark
+        const newTheme = getTheme() === ThemeName.dark ? ThemeName.light : ThemeName.dark
         setTheme(newTheme)
-        setIsDark(!isDark)
+        setIsDark(newTheme === ThemeName.dark)
     }
 
     return (
