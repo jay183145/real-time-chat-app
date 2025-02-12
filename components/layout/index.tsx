@@ -11,7 +11,7 @@ function RootLayout({ title, children }: RootLayoutProps) {
     return (
         <>
             <Header title={title} />
-            {children}
+            <div className="overflow-y-auto">{children}</div>
             <BottomNav />
         </>
     )

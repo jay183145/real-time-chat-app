@@ -4,7 +4,7 @@ import Link from "next/link"
 
 function BottomNav() {
     return (
-        <div className="mt-auto border-t">
+        <div className="bg-primary-4 mt-auto border-t text-neutral-800">
             <div className="flex justify-around py-2">
                 {[
                     { icon: Home, label: "首頁", href: "/" },
