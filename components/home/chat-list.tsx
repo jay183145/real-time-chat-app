@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react"
 import { ChevronRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/lib/auth/auth-store"
-import AuthAlert from "../alert/auth"
+import AuthAlert from "../modal/auth/alert"
 
 function ChatList() {
     // 取得聊天室列表

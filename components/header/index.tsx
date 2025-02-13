@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react"
 import { Menu } from "lucide-react"
-import { Switch } from "@/components/switch"
+import { Switch } from "@/components/ui/switch"
 import { Moon } from "lucide-react"
 import { getTheme, setTheme, ThemeName } from "@/utils/theme"
 
@@ -24,7 +24,7 @@ function Header({ title }: HeaderProps) {
     }
 
     return (
-        <header className="bg-primary-5 flex items-center justify-between p-4 text-neutral-800">
+        <header className="flex items-center justify-between bg-primary-5 p-4 text-neutral-800">
             <button className="px-4 py-1">
                 <Menu className="h-6 w-6" />
             </button>
