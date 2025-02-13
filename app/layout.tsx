@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { cookies } from "next/headers"
 import { AuthProvider } from "@/lib/auth/context"
+import AuthModal from "@/components/modal/auth"
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default async function RootLayout({
             >
                 <div className="mx-auto flex h-screen max-w-md flex-col bg-neutral-700">
                     <AuthProvider>{children}</AuthProvider>
+                    <AuthModal />
                 </div>
             </body>
         </html>
