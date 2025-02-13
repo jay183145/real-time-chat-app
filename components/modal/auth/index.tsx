@@ -1,7 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect } from "react"
 import { useAuthStore } from "@/lib/auth/auth-store"
 import BaseModal from "@/components/modal"
@@ -10,11 +10,12 @@ import { CircleX } from "lucide-react"
 import { LoaderCircle } from "lucide-react"
 
 function AuthModal() {
+    const router = useRouter()
     const search = useSearchParams()
     const { userInfo } = useAuthStore()
     const isAuth = !!userInfo
 
-    const { type, modalStack, initAuthModal, closeModal } = useAuthModalStore()
+    const { type, initAuthModal, closeModal } = useAuthModalStore()
     const Content = type
         ? dynamic(() => import(`./contents/${type}`), {
               ssr: false,
@@ -25,14 +26,19 @@ function AuthModal() {
               ),
           })
         : null
-    console.log("type", type)
-    console.log("modalStack", modalStack)
 
     // 初始化彈窗
     useEffect(() => {
         const auth = search.get("auth") as AuthModalType
         initAuthModal(auth)
     }, [initAuthModal, search])
+
+    const handleCloseModal = () => {
+        closeModal()
+        const params = new URLSearchParams(search.toString())
+        params.delete("auth")
+        router.push(`?${params.toString()}`)
+    }
 
     return !isAuth && Content ? (
         <BaseModal data-title="modal:auth">
@@ -41,7 +47,7 @@ function AuthModal() {
                 <div className="flex w-full items-center justify-between rounded-t-2xl bg-primary-3 px-4 py-3">
                     <CircleX className="invisible text-xl" />
                     <span className="text-center text-xl font-bold text-shades-100">{type}</span>
-                    <CircleX className="cursor-pointer text-xl text-shades-100" onClick={() => closeModal()} />
+                    <CircleX className="cursor-pointer text-xl text-shades-100" onClick={handleCloseModal} />
                 </div>
                 {/* 內容 */}
                 <Content />

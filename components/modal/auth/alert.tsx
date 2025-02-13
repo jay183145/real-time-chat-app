@@ -3,6 +3,7 @@
 import { useAuthModalStore } from "@/lib/store/auth-modal"
 import React from "react"
 import BaseModal from "@/components/modal"
+import { useRouter } from "next/navigation"
 
 type AuthAlertProps = {
     isShow: boolean
@@ -10,10 +11,12 @@ type AuthAlertProps = {
 }
 
 function AuthAlert({ isShow, setIsShow }: AuthAlertProps) {
+    const router = useRouter()
     const { closeAllModals, initAuthModal } = useAuthModalStore()
 
     function handleConfirm() {
         initAuthModal("login")
+        router.push("?auth=login")
         closeAllModals()
         setIsShow(false)
     }
