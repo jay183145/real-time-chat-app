@@ -4,10 +4,18 @@ import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import Button from "@/components/ui/button"
 import ErrorModal from "@/components/modal/error-modal"
+import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import { useAuthModalStore } from "@/lib/store/auth-modal"
+import { useAuthStore } from "@/lib/auth/auth-store"
 
 function LoginContent() {
+    const router = useRouter()
+    const search = useSearchParams()
     const [error, setError] = useState<string | null>(null)
     const [isShowErrorModal, setIsShowErrorModal] = useState(false)
+    const { closeModal } = useAuthModalStore()
+    const { login } = useAuthStore()
 
     const {
         register,
@@ -28,6 +36,11 @@ function LoginContent() {
         }
         if (data) {
             setJwtToken(data.token)
+            login(data.user)
+            closeModal()
+            const params = new URLSearchParams(search.toString())
+            params.delete("auth")
+            router.push(`?${params.toString()}`)
         }
     }
 
