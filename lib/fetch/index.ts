@@ -1,5 +1,5 @@
-import { clearJwtToken, getJwtToken } from "../auth/client"
-import { getJwtTokenServer } from "../auth/server"
+import { clearJwtToken, getJwtToken } from "../auth/jwt-client"
+import { getJwtTokenServer } from "../auth/jwt-server"
 import { isServer } from "../constant/common"
 import { API_URL } from "../constant/env"
 import { ApiError, ApiFetchOptions, ApiFetchResult } from "./type"
