@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-export type AuthModalType = "sign" | "login" | "forget" | "new-password" | null
+export type AuthModalType = "register" | "login" | "forget" | "new-password" | null
 
 type AuthModalStore = {
     type: AuthModalType
@@ -20,8 +20,9 @@ export const useAuthModalStore = create<AuthModalStore>((set, get) => ({
     isLoginConfirm: false,
     initAuthModal: (type: AuthModalType) => set({ type, modalStack: [] }),
     openModal: (type: AuthModalType) => set({ type, modalStack: [...get().modalStack, type] }),
-    closeModal: () => set({ modalStack: get().modalStack.slice(0, -1) }),
-    closeAllModals: () => set({ modalStack: [] }),
-    backToPreviousModal: () => set({ modalStack: get().modalStack.slice(0, -1) }),
+    closeModal: () => set({ type: null, modalStack: get().modalStack.slice(0, -1) }),
+    closeAllModals: () => set({ type: null, modalStack: [] }),
+    backToPreviousModal: () =>
+        set({ type: get().modalStack[get().modalStack.length - 2], modalStack: get().modalStack.slice(0, -1) }),
     setIsLoginConfirm: (isLoginConfirm: boolean) => set({ isLoginConfirm }),
 }))
