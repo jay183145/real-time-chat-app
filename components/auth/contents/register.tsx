@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form"
 import Button from "@/components/ui/button"
 import ErrorModal from "@/components/modal/error-modal"
 import { useRouter } from "next/navigation"
-import { useAuthModalStore } from "@/lib/store/auth-modal"
+import SuccessModal from "@/components/modal/success-modal"
 
 function RegisterContent() {
     const router = useRouter()
     const [error, setError] = useState<string | null>(null)
     const [isShowErrorModal, setIsShowErrorModal] = useState(false)
-    const { closeModal } = useAuthModalStore()
+    const [isShowSuccessModal, setIsShowSuccessModal] = useState(false)
 
     const {
         register,
@@ -31,13 +31,17 @@ function RegisterContent() {
             setIsShowErrorModal(true)
         }
         if (data) {
-            closeModal()
-            router.push("?auth=login")
+            setIsShowSuccessModal(true)
         }
     }
 
     const handleLogin = () => {
         router.push("?auth=login")
+    }
+
+    const handleSuccessModal = () => {
+        router.push("?auth=login")
+        setIsShowSuccessModal(false)
     }
 
     return (
@@ -46,10 +50,10 @@ function RegisterContent() {
                 <div>
                     <input
                         {...register("email", {
-                            required: "Email is required",
+                            required: "請輸入郵箱",
                             pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: "Please enter a valid email address",
+                                message: "請輸入正確的郵箱",
                             },
                         })}
                         type="text"
@@ -61,8 +65,8 @@ function RegisterContent() {
                 <div>
                     <input
                         {...register("password", {
-                            required: "Password is required",
-                            minLength: { value: 6, message: "Password must be at least 6 characters" },
+                            required: "請輸入密碼",
+                            minLength: { value: 6, message: "密碼至少6個字" },
                         })}
                         type="password"
                         placeholder="密碼"
@@ -72,7 +76,7 @@ function RegisterContent() {
                 </div>
                 <div>
                     <input
-                        {...register("user", { required: "User is required" })}
+                        {...register("user", { required: "請輸入使用者名稱" })}
                         type="text"
                         placeholder="使用者名稱"
                         className="w-full rounded-md border border-neutral-400 bg-neutral-600 px-3 py-1 text-neutral-50 placeholder:text-neutral-300"
@@ -102,6 +106,13 @@ function RegisterContent() {
                     </button>
                 </div>
             </div>
+            <SuccessModal
+                successContent="註冊成功"
+                successButtonContent="立即登入"
+                isShow={isShowSuccessModal}
+                setIsShow={setIsShowSuccessModal}
+                onClick={handleSuccessModal}
+            />
         </div>
     )
 }
