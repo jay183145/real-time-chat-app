@@ -1,5 +1,4 @@
 import { loginUser } from "@/lib/api/users"
-import { setJwtToken } from "@/lib/auth/jwt-client"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import Button from "@/components/ui/button"
@@ -35,13 +34,16 @@ function LoginContent() {
             setIsShowErrorModal(true)
         }
         if (data) {
-            setJwtToken(data.token)
-            login(data.user)
+            login(data)
             closeModal()
             const params = new URLSearchParams(search.toString())
             params.delete("auth")
             router.push(`?${params.toString()}`)
         }
+    }
+
+    const handleRegister = () => {
+        router.push("?auth=register")
     }
 
     return (
@@ -89,7 +91,10 @@ function LoginContent() {
             <div className="flex items-center justify-between px-2">
                 <div className="mx-2">還沒有帳號嗎?</div>
                 <div className="flex items-center justify-end">
-                    <button className="font-bold text-primary-4 underline hover:cursor-pointer hover:text-primary-3">
+                    <button
+                        onClick={handleRegister}
+                        className="font-bold text-primary-4 underline hover:cursor-pointer hover:text-primary-3"
+                    >
                         立即註冊
                     </button>
                 </div>

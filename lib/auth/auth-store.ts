@@ -1,40 +1,40 @@
 "use client"
 
 import { create } from "zustand"
-import { RegisterResponse } from "@/lib/api/users/type"
+import { RegisterResponse, UserLoginResponse } from "@/lib/api/users/type"
 
 interface AuthStore {
     userInfo: RegisterResponse | null
-    isLoading: boolean
-    login: (user: RegisterResponse) => void
+    token: string | null
+    login: (userData: UserLoginResponse) => void
     logout: () => void
     checkAuth: () => Promise<void>
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
     userInfo: null,
-    isLoading: true,
-
-    login: (userData: RegisterResponse) => {
-        set({ userInfo: userData })
-        localStorage.setItem("userInfo", JSON.stringify(userData))
+    token: null,
+    login: (userData: UserLoginResponse) => {
+        set({ userInfo: userData.user, token: userData.token })
+        localStorage.setItem("userInfo", JSON.stringify(userData.user))
+        localStorage.setItem("token", JSON.stringify(userData.token))
     },
 
     logout: () => {
-        set({ userInfo: null })
+        set({ userInfo: null, token: null })
         localStorage.removeItem("userInfo")
+        localStorage.removeItem("token")
     },
 
     checkAuth: async () => {
         try {
             const storedUser = localStorage.getItem("userInfo")
-            if (storedUser) {
-                set({ userInfo: JSON.parse(storedUser) })
+            const storedToken = localStorage.getItem("token")
+            if (storedUser && storedToken) {
+                set({ userInfo: JSON.parse(storedUser), token: JSON.parse(storedToken) })
             }
         } catch (error) {
             console.error("Auth check failed:", error)
-        } finally {
-            set({ isLoading: false })
         }
     },
 }))
