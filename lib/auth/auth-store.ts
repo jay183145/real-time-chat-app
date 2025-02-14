@@ -31,7 +31,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
             const storedUser = localStorage.getItem("userInfo")
             const storedToken = localStorage.getItem("token")
             if (storedUser && storedToken) {
-                set({ userInfo: JSON.parse(storedUser), token: JSON.parse(storedToken) })
+                set({ userInfo: JSON.parse(storedUser), token: storedToken })
             }
         } catch (error) {
             console.error("Auth check failed:", error)
