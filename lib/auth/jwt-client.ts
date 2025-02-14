@@ -1,14 +1,8 @@
-import { isServer } from "../constant/common"
-
-const JWT_STORAGE_KEY = "jwtToken"
-
 /**
  * 從 localStorage 取得 JWT Token
  */
 export function getJwtToken(): string | null {
-    // 若在 server side（例如 SSR），localStorage 可能不存在，直接回傳 null
-    if (isServer) return null
-    return localStorage.getItem(JWT_STORAGE_KEY)
+    return localStorage.getItem("token")
 }
 
 /**
@@ -16,14 +10,12 @@ export function getJwtToken(): string | null {
  * @param token JWT token 字串
  */
 export function setJwtToken(token: string) {
-    if (isServer) return
-    localStorage.setItem(JWT_STORAGE_KEY, token)
+    localStorage.setItem("token", token)
 }
 
 /**
  * 清除 JWT Token
  */
 export function clearJwtToken() {
-    if (isServer) return
-    localStorage.removeItem(JWT_STORAGE_KEY)
+    localStorage.removeItem("token")
 }
