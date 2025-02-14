@@ -20,7 +20,7 @@ function AuthModal() {
         ? dynamic(() => import(`./contents/${type}`), {
               ssr: false,
               loading: () => (
-                  <div className="flex h-[260px] items-center justify-center p-8">
+                  <div className="flex h-[280px] items-center justify-center p-8">
                       <LoaderCircle className="h-8 w-8 animate-spin rounded-full text-neutral-50" />
                   </div>
               ),
