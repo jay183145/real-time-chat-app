@@ -17,7 +17,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     login: (userData: UserLoginResponse) => {
         set({ userInfo: userData.user, token: userData.token })
         localStorage.setItem("userInfo", JSON.stringify(userData.user))
-        localStorage.setItem("token", JSON.stringify(userData.token))
+        localStorage.setItem("token", userData.token)
     },
 
     logout: () => {
