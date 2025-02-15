@@ -57,7 +57,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                         key={index}
                         className={`mb-4 flex items-start ${isCurrentUser ? "justify-end" : "justify-start"}`}
                     >
-                        {/* 他人訊息才顯示頭像，自己的訊息可以考慮放在右側或隱藏 */}
+                        {/* 他人訊息才顯示頭像，自己的訊息隱藏 */}
                         {!isCurrentUser && (
                             <div className="mr-2 flex-shrink-0">
                                 <Image
@@ -70,9 +70,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                             </div>
                         )}
 
-                        <div
-                            className={`max-w-xs md:max-w-sm lg:max-w-md ${isCurrentUser ? "text-right" : "text-left"}`}
-                        >
+                        <div className={`max-w-[80%] ${isCurrentUser ? "text-right" : "text-left"}`}>
                             {/* 如果是他人訊息，顯示名稱 */}
                             {!isCurrentUser && <div className="rouu text-sm text-neutral-500">{msg.user}</div>}
                             <div>
@@ -80,7 +78,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                                 {msg.messageType === "text" && (
                                     <div className={`flex ${isCurrentUser ? "justify-end" : "justify-start"}`}>
                                         <p
-                                            className={`flex rounded-xl px-3 py-2 ${isCurrentUser ? "bg-primary-4 text-shades-100" : "bg-shades-100 text-shades-0"}`}
+                                            className={`flex break-words rounded-xl px-3 py-2 ${isCurrentUser ? "bg-primary-4 text-shades-100" : "bg-shades-100 text-shades-0"}`}
                                         >
                                             {msg.message}
                                         </p>
@@ -99,7 +97,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                                 )}
                             </div>
 
-                            {/* 反應（reactions）示範，可以自行設計顯示 icon */}
+                            {/* 反應 */}
                             {Object.keys(msg.reactions).length > 0 && (
                                 <div className="mt-1 flex gap-2 text-sm text-gray-500">
                                     {Object.entries(msg.reactions).map(([key, value]) => (
@@ -110,7 +108,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                                 </div>
                             )}
 
-                            {/* 時間顯示 (簡易示範) */}
+                            {/* 時間顯示 */}
                             <div className="mt-1 text-xs text-gray-400">{new Date(msg.timestamp).toLocaleString()}</div>
                         </div>
                     </div>
