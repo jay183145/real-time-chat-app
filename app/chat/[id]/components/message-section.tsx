@@ -105,10 +105,19 @@ function MessageSection({ conversationId }: MessageSectionProps) {
 
                             {/* 反應 */}
                             {Object.keys(msg.reactions).length > 0 && (
-                                <div className="mt-1 flex gap-2 text-sm text-gray-500">
+                                <div
+                                    className={`mt-1 flex gap-2 text-sm text-neutral-300 ${isCurrentUser ? "justify-end" : "justify-start"}`}
+                                >
                                     {Object.entries(msg.reactions).map(([key, value]) => (
-                                        <span key={key}>
-                                            {key} {value}
+                                        <span
+                                            className="flex cursor-pointer items-center gap-1 hover:text-neutral-500"
+                                            key={key}
+                                        >
+                                            {key === "like" && <span>👍</span>}
+                                            {key === "love" && <span>❤️</span>}
+                                            {key === "laugh" && <span>😂</span>}
+                                            <span>{key}</span>
+                                            <span>{value}</span>
                                         </span>
                                     ))}
                                 </div>
