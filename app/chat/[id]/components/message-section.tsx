@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react"
 import { getMessages } from "@/lib/api/messages"
 import Image from "next/image"
 import { Message } from "@/lib/api/messages/type"
-
 import { useAuthStore } from "@/lib/auth/auth-store"
 import { useRouter } from "next/navigation"
+import dayjs from "dayjs"
 
 type MessageSectionProps = {
     conversationId: number
@@ -70,10 +70,10 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                             </div>
                         )}
 
-                        <div className={`max-w-[80%] ${isCurrentUser ? "text-right" : "text-left"}`}>
+                        <div className={` ${isCurrentUser ? "text-right" : "text-left"}`}>
                             {/* 如果是他人訊息，顯示名稱 */}
                             {!isCurrentUser && <div className="rouu text-sm text-neutral-500">{msg.user}</div>}
-                            <div>
+                            <div className="flex gap-2">
                                 {/* 如果是文字訊息 */}
                                 {msg.messageType === "text" && (
                                     <div className={`flex ${isCurrentUser ? "justify-end" : "justify-start"}`}>
@@ -95,6 +95,12 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                                         className="rounded shadow"
                                     />
                                 )}
+                                {/* 時間顯示 */}
+                                <div className={`flex w-full flex-1 ${isCurrentUser ? "order-first" : "order-last"}`}>
+                                    <div className="flex w-full items-end justify-end text-xs text-neutral-500">
+                                        {dayjs(msg.timestamp).format("HH:mm")}
+                                    </div>
+                                </div>
                             </div>
 
                             {/* 反應 */}
@@ -107,9 +113,6 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                                     ))}
                                 </div>
                             )}
-
-                            {/* 時間顯示 */}
-                            <div className="mt-1 text-xs text-gray-400">{new Date(msg.timestamp).toLocaleString()}</div>
                         </div>
                     </div>
                 )
