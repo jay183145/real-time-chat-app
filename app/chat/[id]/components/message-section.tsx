@@ -15,7 +15,9 @@ type MessageSectionProps = {
 function MessageSection({ conversationId }: MessageSectionProps) {
     const router = useRouter()
     const [messages, setMessages] = useState<Message[]>([])
-    const { logout } = useAuthStore()
+    const { logout, userInfo } = useAuthStore()
+    const currentUserId = userInfo?.userId
+    console.log(currentUserId)
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -41,13 +43,15 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                 if (msg.messageType === "system") {
                     return (
                         <div key={index} className="mb-4 flex justify-center">
-                            <div className="rounded-md bg-gray-200 px-4 py-2 text-sm text-gray-500">{msg.message}</div>
+                            <div className="rounded-md bg-neutral-700 px-4 py-2 text-sm text-neutral-400">
+                                {msg.message}
+                            </div>
                         </div>
                     )
                 }
 
-                // const isCurrentUser = msg.userId === currentUserId
-                const isCurrentUser = true
+                const isCurrentUser = msg.userId === currentUserId
+
                 return (
                     <div
                         key={index}
@@ -69,6 +73,8 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                         <div
                             className={`max-w-xs md:max-w-sm lg:max-w-md ${isCurrentUser ? "text-right" : "text-left"}`}
                         >
+                            {/* 如果是他人訊息，顯示名稱 */}
+                            {!isCurrentUser && <div className="rouu text-sm text-neutral-500">{msg.user}</div>}
                             <div className={`rounded-xl p-2 ${isCurrentUser ? "bg-blue-500 text-white" : "bg-white"}`}>
                                 {/* 如果是文字訊息 */}
                                 {msg.messageType === "text" && <p>{msg.message}</p>}
