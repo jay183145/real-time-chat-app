@@ -17,7 +17,6 @@ function MessageSection({ conversationId }: MessageSectionProps) {
     const [messages, setMessages] = useState<Message[]>([])
     const { logout, userInfo } = useAuthStore()
     const currentUserId = userInfo?.userId
-    console.log(currentUserId)
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -35,6 +34,22 @@ function MessageSection({ conversationId }: MessageSectionProps) {
         fetchMessages()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    function handleReactionClick(messageId: string, reaction: string) {
+        setMessages((prevMessages) =>
+            prevMessages.map((msg) => {
+                if (msg._id === messageId) {
+                    const updatedReactions = { ...msg.reactions }
+
+                    updatedReactions[reaction as keyof typeof msg.reactions] =
+                        (updatedReactions[reaction as keyof typeof msg.reactions] || 0) + 1
+
+                    return { ...msg, reactions: updatedReactions }
+                }
+                return msg
+            }),
+        )
+    }
 
     return (
         <div className="flex-1 overflow-y-auto bg-gray-100 p-4">
@@ -110,7 +125,8 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                                 >
                                     {Object.entries(msg.reactions).map(([key, value]) => (
                                         <span
-                                            className="flex cursor-pointer items-center gap-1 hover:text-neutral-500"
+                                            onClick={() => handleReactionClick(msg._id, key)}
+                                            className="hover:motion-preset-pulse-sm flex cursor-pointer items-center gap-1 hover:text-neutral-500"
                                             key={key}
                                         >
                                             {key === "like" && <span>👍</span>}

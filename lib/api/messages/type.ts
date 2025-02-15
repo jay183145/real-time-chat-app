@@ -1,4 +1,5 @@
 export interface Message {
+    _id: string
     conversationId: number
     userId: number
     user: string
