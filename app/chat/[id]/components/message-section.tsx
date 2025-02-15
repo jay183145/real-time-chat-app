@@ -75,9 +75,17 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                         >
                             {/* 如果是他人訊息，顯示名稱 */}
                             {!isCurrentUser && <div className="rouu text-sm text-neutral-500">{msg.user}</div>}
-                            <div className={`rounded-xl p-2 ${isCurrentUser ? "bg-blue-500 text-white" : "bg-white"}`}>
+                            <div>
                                 {/* 如果是文字訊息 */}
-                                {msg.messageType === "text" && <p>{msg.message}</p>}
+                                {msg.messageType === "text" && (
+                                    <div className={`flex ${isCurrentUser ? "justify-end" : "justify-start"}`}>
+                                        <p
+                                            className={`flex rounded-xl px-3 py-2 ${isCurrentUser ? "bg-primary-4 text-shades-100" : "bg-shades-100 text-shades-0"}`}
+                                        >
+                                            {msg.message}
+                                        </p>
+                                    </div>
+                                )}
 
                                 {/* 如果是圖片訊息 */}
                                 {msg.messageType === "image" && (
