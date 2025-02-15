@@ -7,6 +7,7 @@ export interface UserData {
 
 export type RegisterResponse = {
     id: number
+    userId: number
     user: string
     email: string
     createdAt: string
