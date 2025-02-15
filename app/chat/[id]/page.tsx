@@ -1,11 +1,12 @@
 import React from "react"
 import MessageSection from "./components/message-section"
+import SecondaryLayout from "@/components/layout/secondary"
 
 async function ChatPage({ params }: { params: Promise<{ id: number }> }) {
     const { id } = await params
 
     return (
-        <div className="flex h-screen flex-col">
+        <SecondaryLayout title="聊天室">
             {/* 聊天訊息區域 */}
             <MessageSection conversationId={id} />
 
@@ -27,7 +28,7 @@ async function ChatPage({ params }: { params: Promise<{ id: number }> }) {
                     </button>
                 </div>
             </div> */}
-        </div>
+        </SecondaryLayout>
     )
 }
 
