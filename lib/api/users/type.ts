@@ -9,6 +9,7 @@ export type RegisterResponse = {
     id: number
     userId: number
     user: string
+    avatar: string
     email: string
     createdAt: string
     updatedAt: string
