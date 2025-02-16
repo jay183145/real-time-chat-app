@@ -3,6 +3,7 @@ import MessageSection from "./components/message-section"
 import SecondaryLayout from "@/components/layout/secondary"
 import ChatInputSection from "./components/input-section"
 import { MessagesProvider } from "./context/messages-context"
+
 async function ChatPage({ params }: { params: Promise<{ id: number }> }) {
     const { id } = await params
 

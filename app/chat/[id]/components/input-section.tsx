@@ -1,12 +1,40 @@
 "use client"
 
 import React, { useState } from "react"
+import { useMessages } from "@/app/chat/[id]/context/messages-context"
+import { useAuthStore } from "@/lib/auth/auth-store"
+import { useParams } from "next/navigation"
+import { MessageType } from "@/lib/api/messages/type"
+import { nanoid } from "nanoid"
 
 function ChatInputSection() {
     const [inputValue, setInputValue] = useState("")
+    const { messages, setMessages } = useMessages()
+    const { userInfo } = useAuthStore()
+    const params = useParams<{ id: string }>()
+    const conversationId = params.id
+
+    const tempId = nanoid()
 
     const handleSend = () => {
-        console.log(inputValue)
+        if (inputValue.trim() === "") return
+        if (!userInfo) return
+
+        const newMessage = {
+            // 樂觀更新：先將訊息加到畫面上，等伺服器回應後再用真正的 _id 更新
+            _id: tempId,
+            conversationId: parseInt(conversationId),
+            userId: userInfo?.userId,
+            user: userInfo?.user,
+            avatar: userInfo?.avatar,
+            messageType: "text" as MessageType,
+            message: inputValue,
+            reactions: { like: 0, love: 0, laugh: 0 },
+            timestamp: new Date().getTime(),
+        }
+
+        setMessages([newMessage, ...messages])
+        setInputValue("")
     }
 
     return (

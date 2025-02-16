@@ -10,7 +10,7 @@ export interface Message {
     timestamp: number
 }
 
-type MessageType = "text" | "image" | "system"
+export type MessageType = "text" | "image" | "system"
 
 type Reaction = {
     like: number
