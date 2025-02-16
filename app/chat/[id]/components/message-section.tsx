@@ -35,7 +35,11 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                     router.push("/?auth=login")
                 }
             } else {
-                setMessages(data || [])
+                // 根據 timestamp 排序訊息，從新到舊
+                const sortedMessages = [...(data || [])].sort(
+                    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+                )
+                setMessages(sortedMessages)
             }
         }
 
@@ -102,12 +106,12 @@ function MessageSection({ conversationId }: MessageSectionProps) {
     }
 
     return (
-        <div className="flex-1 overflow-y-auto bg-gray-100 p-4">
-            {messages?.map((msg, index) => {
+        <div className="flex flex-1 flex-col-reverse overflow-y-auto bg-neutral-800 p-4">
+            {messages?.map((msg) => {
                 // 判斷是否為系統訊息
                 if (msg.messageType === "system") {
                     return (
-                        <div key={index} className="mb-4 flex justify-center">
+                        <div key={msg._id} className="mb-4 flex justify-center">
                             <div className="rounded-md bg-neutral-700 px-4 py-2 text-sm text-neutral-400">
                                 {msg.message}
                             </div>
@@ -119,7 +123,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
 
                 return (
                     <div
-                        key={index}
+                        key={msg._id}
                         className={`mb-4 flex items-start ${isCurrentUser ? "justify-end" : "justify-start"}`}
                     >
                         {/* 他人訊息才顯示頭像，自己的訊息隱藏 */}
@@ -182,8 +186,10 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                                         return (
                                             <span
                                                 onClick={() => handleReactionClick(msg._id, key)}
-                                                className={`flex cursor-pointer items-center gap-1 hover:motion-preset-pulse-sm ${
-                                                    hasReacted ? "text-neutral-200" : "text-neutral-500"
+                                                className={`flex cursor-pointer items-center gap-1 motion-translate-y-in-100 motion-blur-in-md motion-opacity-in-0 ${
+                                                    hasReacted
+                                                        ? "text-neutral-200"
+                                                        : "text-neutral-500 hover:motion-preset-pulse-sm"
                                                 }`}
                                                 key={key}
                                             >
