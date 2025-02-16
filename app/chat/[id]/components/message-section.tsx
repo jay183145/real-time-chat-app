@@ -12,9 +12,16 @@ type MessageSectionProps = {
     conversationId: number
 }
 
+type MessageHasReactionBefore = {
+    messageId: string
+    reactions: ("like" | "love" | "laugh")[]
+}
+
 function MessageSection({ conversationId }: MessageSectionProps) {
     const router = useRouter()
     const [messages, setMessages] = useState<Message[]>([])
+    const [messagesHasReactionBefore, setMessagesHasReactionBefore] = useState<MessageHasReactionBefore[]>([])
+
     const { logout, userInfo } = useAuthStore()
     const currentUserId = userInfo?.userId
 
@@ -38,14 +45,56 @@ function MessageSection({ conversationId }: MessageSectionProps) {
     function handleReactionClick(messageId: string, reaction: string) {
         setMessages((prevMessages) =>
             prevMessages.map((msg) => {
+                // 找到按反應的訊息
                 if (msg._id === messageId) {
+                    // 判斷是否已按過反應
+                    const idHasReactionBefore = messagesHasReactionBefore.find((item) => item.messageId === messageId)
+                    if (idHasReactionBefore) {
+                        // 判斷是否已按過同 ID 其他反應
+                        const reactionHasReactionBefore = idHasReactionBefore?.reactions.includes(
+                            reaction as keyof typeof msg.reactions,
+                        )
+                        if (reactionHasReactionBefore) {
+                            // 使用者已經按過反應，則取消反應
+                            const newReactionObj: MessageHasReactionBefore = {
+                                messageId,
+                                reactions: idHasReactionBefore.reactions.filter((item) => item !== reaction),
+                            }
+                            setMessagesHasReactionBefore((prev) =>
+                                prev.map((item) => (item.messageId === messageId ? newReactionObj : item)),
+                            )
+                            // 更新反應數量
+                            const updatedReactions = { ...msg.reactions }
+
+                            updatedReactions[reaction as keyof typeof msg.reactions] =
+                                (updatedReactions[reaction as keyof typeof msg.reactions] || 0) - 1
+
+                            return { ...msg, reactions: updatedReactions }
+                        }
+                    }
+
+                    // 使用者未按過反應，則增加反應
+                    const newReactionObj: MessageHasReactionBefore = {
+                        messageId,
+                        reactions: [...(idHasReactionBefore?.reactions || []), reaction as keyof typeof msg.reactions],
+                    }
+                    setMessagesHasReactionBefore((prev) => {
+                        const existingIndex = prev.findIndex((item) => item.messageId === messageId)
+                        if (existingIndex !== -1) {
+                            // 使用者有按過同 ID 其他反應，則將原本的 object 以 newReactionObj 更新
+                            return prev.map((item) => (item.messageId === messageId ? newReactionObj : item))
+                        }
+                        // 使用者未按過同 ID 其他反應，則增加 newReactionObj
+                        return [...prev, newReactionObj]
+                    })
+                    // 更新反應數量
                     const updatedReactions = { ...msg.reactions }
 
                     updatedReactions[reaction as keyof typeof msg.reactions] =
                         (updatedReactions[reaction as keyof typeof msg.reactions] || 0) + 1
-
                     return { ...msg, reactions: updatedReactions }
                 }
+
                 return msg
             }),
         )
@@ -126,7 +175,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                                     {Object.entries(msg.reactions).map(([key, value]) => (
                                         <span
                                             onClick={() => handleReactionClick(msg._id, key)}
-                                            className="hover:motion-preset-pulse-sm flex cursor-pointer items-center gap-1 hover:text-neutral-500"
+                                            className="flex cursor-pointer items-center gap-1 hover:motion-preset-pulse-sm hover:text-neutral-500"
                                             key={key}
                                         >
                                             {key === "like" && <span>👍</span>}
