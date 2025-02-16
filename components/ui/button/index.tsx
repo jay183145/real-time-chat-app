@@ -13,7 +13,7 @@ export default function Button({ children, variant = "primary", size = "sm", cla
             case "secondary":
                 return "bg-neutral-600 text-neutral-100 hover:bg-neutral-700"
             case "outline":
-                return "border border-neutral-600 bg-transparent text-neutral-50 hover:border-neutral-500"
+                return "border border-neutral-400 bg-transparent text-neutral-400 hover:border-neutral-50 hover:text-neutral-50"
         }
     }, [variant])
 
