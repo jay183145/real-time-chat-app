@@ -8,6 +8,7 @@ import { useAuthStore } from "@/lib/auth/auth-store"
 import { useRouter } from "next/navigation"
 import dayjs from "dayjs"
 import { Heart, Smile, ThumbsUp } from "lucide-react"
+import { useMessages } from "@/app/chat/[id]/context/messages-context"
 
 type MessageSectionProps = {
     conversationId: number
@@ -20,7 +21,7 @@ type MessageHasReactionBefore = {
 
 function MessageSection({ conversationId }: MessageSectionProps) {
     const router = useRouter()
-    const [messages, setMessages] = useState<Message[]>([])
+    const { messages, setMessages } = useMessages()
     const [animatingMessageId, setAnimatingMessageId] = useState<{ messageId: string; reaction: string } | null>(null)
     const [messagesHasReactionBefore, setMessagesHasReactionBefore] = useState<MessageHasReactionBefore[]>([])
 
@@ -49,7 +50,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
     }, [])
 
     function handleReactionClick(messageId: string, reaction: string) {
-        setMessages((prevMessages) =>
+        setMessages((prevMessages: Message[]) =>
             prevMessages.map((msg) => {
                 // 找到按反應的訊息
                 if (msg._id === messageId) {
@@ -108,7 +109,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
 
     return (
         <div className="flex flex-1 flex-col-reverse overflow-y-auto bg-neutral-800 p-4">
-            {messages?.map((msg) => {
+            {messages?.map((msg: Message) => {
                 // 判斷是否為系統訊息
                 if (msg.messageType === "system") {
                     return (
