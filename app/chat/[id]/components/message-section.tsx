@@ -7,6 +7,7 @@ import { Message } from "@/lib/api/messages/type"
 import { useAuthStore } from "@/lib/auth/auth-store"
 import { useRouter } from "next/navigation"
 import dayjs from "dayjs"
+import { Heart, Smile, ThumbsUp } from "lucide-react"
 
 type MessageSectionProps = {
     conversationId: number
@@ -170,21 +171,40 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                             {/* 反應 */}
                             {Object.keys(msg.reactions).length > 0 && (
                                 <div
-                                    className={`mt-1 flex gap-2 text-sm text-neutral-300 ${isCurrentUser ? "justify-end" : "justify-start"}`}
+                                    className={`mt-1 flex gap-2 text-sm ${isCurrentUser ? "justify-end" : "justify-start"}`}
                                 >
-                                    {Object.entries(msg.reactions).map(([key, value]) => (
-                                        <span
-                                            onClick={() => handleReactionClick(msg._id, key)}
-                                            className="flex cursor-pointer items-center gap-1 hover:motion-preset-pulse-sm hover:text-neutral-500"
-                                            key={key}
-                                        >
-                                            {key === "like" && <span>👍</span>}
-                                            {key === "love" && <span>❤️</span>}
-                                            {key === "laugh" && <span>😂</span>}
-                                            <span>{key}</span>
-                                            <span>{value}</span>
-                                        </span>
-                                    ))}
+                                    {Object.entries(msg.reactions).map(([key, value]) => {
+                                        // 檢查使用者是否對這個訊息按過這個反應
+                                        const hasReacted = messagesHasReactionBefore
+                                            .find((item) => item.messageId === msg._id)
+                                            ?.reactions.includes(key as "like" | "love" | "laugh")
+
+                                        return (
+                                            <span
+                                                onClick={() => handleReactionClick(msg._id, key)}
+                                                className={`flex cursor-pointer items-center gap-1 hover:motion-preset-pulse-sm ${
+                                                    hasReacted ? "text-neutral-200" : "text-neutral-500"
+                                                }`}
+                                                key={key}
+                                            >
+                                                {key === "like" && (
+                                                    <ThumbsUp
+                                                        className={`h-4 w-4 ${hasReacted ? "text-primary-4" : ""}`}
+                                                    />
+                                                )}
+                                                {key === "love" && (
+                                                    <Heart className={`h-4 w-4 ${hasReacted ? "text-red-500" : ""}`} />
+                                                )}
+                                                {key === "laugh" && (
+                                                    <Smile
+                                                        className={`h-4 w-4 ${hasReacted ? "text-yellow-500" : ""}`}
+                                                    />
+                                                )}
+                                                <span>{key}</span>
+                                                <span>{value}</span>
+                                            </span>
+                                        )
+                                    })}
                                 </div>
                             )}
                         </div>
