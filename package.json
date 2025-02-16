@@ -17,6 +17,7 @@
         "eslint-config-prettier": "^10.0.1",
         "lucide-react": "^0.475.0",
         "motion": "^12.4.2",
+        "nanoid": "^5.1.0",
         "next": "15.1.6",
         "prettier": "^3.5.0",
         "prettier-plugin-tailwindcss": "^0.6.11",
