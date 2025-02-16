@@ -21,6 +21,7 @@ type MessageHasReactionBefore = {
 function MessageSection({ conversationId }: MessageSectionProps) {
     const router = useRouter()
     const [messages, setMessages] = useState<Message[]>([])
+    const [animatingMessageId, setAnimatingMessageId] = useState<{ messageId: string; reaction: string } | null>(null)
     const [messagesHasReactionBefore, setMessagesHasReactionBefore] = useState<MessageHasReactionBefore[]>([])
 
     const { logout, userInfo } = useAuthStore()
@@ -175,39 +176,65 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                             {/* 反應 */}
                             {Object.keys(msg.reactions).length > 0 && (
                                 <div
-                                    className={`mt-1 flex gap-2 text-sm ${isCurrentUser ? "justify-end" : "justify-start"}`}
+                                    className={`mt-1 flex gap-2 text-sm ${
+                                        isCurrentUser ? "justify-end" : "justify-start"
+                                    }`}
                                 >
-                                    {Object.entries(msg.reactions).map(([key, value]) => {
+                                    {Object.entries(msg.reactions).map(([reactionType, count]) => {
                                         // 檢查使用者是否對這個訊息按過這個反應
-                                        const hasReacted = messagesHasReactionBefore
-                                            .find((item) => item.messageId === msg._id)
-                                            ?.reactions.includes(key as "like" | "love" | "laugh")
+                                        const userReaction = messagesHasReactionBefore.find(
+                                            (item) => item.messageId === msg._id,
+                                        )
+                                        const hasReacted = userReaction?.reactions.includes(
+                                            reactionType as "like" | "love" | "laugh",
+                                        )
+
+                                        // 建立反應圖示與對應的主動顏色映射
+                                        const reactionIcons = {
+                                            like: { Icon: ThumbsUp, activeColor: "text-primary-4" },
+                                            love: { Icon: Heart, activeColor: "text-red-500" },
+                                            laugh: { Icon: Smile, activeColor: "text-yellow-500" },
+                                        }
+
+                                        const { Icon, activeColor } =
+                                            reactionIcons[reactionType as keyof typeof reactionIcons]
+
+                                        const isAnimating =
+                                            animatingMessageId?.messageId === msg._id &&
+                                            animatingMessageId?.reaction === reactionType
+
+                                        // 點擊事件處理
+                                        const handleClick = () => {
+                                            handleReactionClick(msg._id, reactionType)
+                                            if (!hasReacted) {
+                                                setAnimatingMessageId({ messageId: msg._id, reaction: reactionType })
+                                                setTimeout(() => {
+                                                    setAnimatingMessageId(null)
+                                                }, 1000)
+                                            }
+                                        }
 
                                         return (
                                             <span
-                                                onClick={() => handleReactionClick(msg._id, key)}
-                                                className={`flex cursor-pointer items-center gap-1 motion-translate-y-in-100 motion-blur-in-md motion-opacity-in-0 ${
+                                                key={reactionType}
+                                                onClick={handleClick}
+                                                className={`flex cursor-pointer items-center gap-1 ${
                                                     hasReacted
                                                         ? "text-neutral-200"
                                                         : "text-neutral-500 hover:motion-preset-pulse-sm"
                                                 }`}
-                                                key={key}
                                             >
-                                                {key === "like" && (
-                                                    <ThumbsUp
-                                                        className={`h-4 w-4 ${hasReacted ? "text-primary-4" : ""}`}
+                                                {
+                                                    <Icon
+                                                        className={`h-4 w-4 ${hasReacted ? activeColor : ""} ${
+                                                            isAnimating
+                                                                ? "motion-scale-loop-125 -motion-translate-y-loop-50 motion-duration-500 motion-ease-spring-bounciest"
+                                                                : ""
+                                                        }`}
                                                     />
-                                                )}
-                                                {key === "love" && (
-                                                    <Heart className={`h-4 w-4 ${hasReacted ? "text-red-500" : ""}`} />
-                                                )}
-                                                {key === "laugh" && (
-                                                    <Smile
-                                                        className={`h-4 w-4 ${hasReacted ? "text-yellow-500" : ""}`}
-                                                    />
-                                                )}
-                                                <span>{key}</span>
-                                                <span>{value}</span>
+                                                }
+                                                <span>{reactionType}</span>
+                                                <span>{count}</span>
                                             </span>
                                         )
                                     })}
