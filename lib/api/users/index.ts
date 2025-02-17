@@ -8,3 +8,7 @@ export async function registerUser(user: T.UserData) {
 export async function loginUser(userLogin: T.UserLogin) {
     return apiFetch<T.UserLoginResponse>({ url: "/login", method: "POST", data: userLogin })
 }
+
+export async function getApiUsers() {
+    return apiFetch<T.RegisterResponse[]>({ url: "/users", method: "GET" })
+}
