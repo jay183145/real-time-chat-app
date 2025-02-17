@@ -7,6 +7,7 @@ import { ChevronRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/lib/auth/auth-store"
 import AuthAlert from "../../auth/alert"
+import cn from "@/utils/cn"
 
 function DatingChatList() {
     const [chatList, setChatList] = useState<Conversation[]>([])
@@ -46,7 +47,10 @@ function DatingChatList() {
                     <li
                         onClick={() => handleClickConversation(chat.id)}
                         key={chat.id}
-                        className="flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow"
+                        className={cn(
+                            "flex cursor-pointer items-center justify-between rounded-lg bg-white p-4 shadow",
+                            "hover:motion-translate-x-out-[5%]",
+                        )}
                     >
                         <div className="flex w-[200px] flex-col items-start justify-start">
                             <div className="flex w-[200px] items-center justify-between">
