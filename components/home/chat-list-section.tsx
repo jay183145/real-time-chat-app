@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import ChatTabs from "./components/chat-tabs"
 import HotChatList from "./components/hot"
 import FavoriteChatList from "./components/favorite"
-
+import DatingChatList from "./components/dating"
 // import HottestToday from "@/components/home/hottest-today"
 
 const chatTabs = [
@@ -25,6 +25,7 @@ function ChatListSection() {
             {/* 聊天室列表 */}
             {activeTab === "收藏" && <FavoriteChatList />}
             {activeTab === "熱門" && <HotChatList />}
+            {activeTab === "交友" && <DatingChatList />}
         </div>
     )
 }
