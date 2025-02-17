@@ -5,6 +5,7 @@ import ChatTabs from "./components/chat-tabs"
 import HotChatList from "./components/hot"
 import FavoriteChatList from "./components/favorite"
 import DatingChatList from "./components/dating"
+import BroadcastChatList from "./components/broadcast"
 // import HottestToday from "@/components/home/hottest-today"
 
 const chatTabs = [
@@ -26,6 +27,7 @@ function ChatListSection() {
             {activeTab === "收藏" && <FavoriteChatList />}
             {activeTab === "熱門" && <HotChatList />}
             {activeTab === "交友" && <DatingChatList />}
+            {activeTab === "廣播" && <BroadcastChatList />}
         </div>
     )
 }
