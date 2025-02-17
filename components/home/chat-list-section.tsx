@@ -18,7 +18,7 @@ const chatTabs = [
 function ChatListSection() {
     const [activeTab, setActiveTab] = useState("熱門")
     return (
-        <div className="mx-auto mt-4 w-[400px] rounded-xl bg-primary-1 p-4">
+        <div className="mx-auto mt-4 w-[370px] rounded-xl bg-primary-1 p-4">
             {/* 今日人氣排行 */}
             {/* <HottestToday /> */}
             {/* 收藏列表 */}

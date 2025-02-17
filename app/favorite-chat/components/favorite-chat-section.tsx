@@ -12,7 +12,7 @@ function FavoriteChatSection() {
     return (
         <>
             {userInfo && (
-                <div className="mx-auto mt-4 w-[400px] rounded-xl bg-primary-1 p-4">
+                <div className="mx-auto mt-4 w-[370px] rounded-xl bg-primary-1 p-4">
                     <FavoriteChatList />
                 </div>
             )}

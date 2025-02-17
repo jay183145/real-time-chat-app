@@ -9,7 +9,7 @@ function Banner() {
     return (
         <div
             onClick={() => router.push("/?auth=register")}
-            className="relative mx-auto my-4 w-[400px] cursor-pointer rounded-xl bg-primary-2 p-4"
+            className="relative mx-auto my-4 w-[370px] cursor-pointer rounded-xl bg-primary-2 p-4"
         >
             <div className="mb-2 flex flex-col items-center gap-2 text-xl font-bold">
                 <span className="relative">
