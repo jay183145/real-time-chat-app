@@ -6,10 +6,11 @@ import React, { useEffect, useState } from "react"
 import { ChevronRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/lib/auth/auth-store"
-import AuthAlert from "../auth/alert"
+import AuthAlert from "../../auth/alert"
 
-function ChatList() {
+function FavoriteChatList() {
     const [chatList, setChatList] = useState<Conversation[]>([])
+    const { userInfo } = useAuthStore()
 
     useEffect(() => {
         async function fetchChatList() {
@@ -17,15 +18,15 @@ function ChatList() {
             if (error) {
                 console.error(error)
             } else {
-                setChatList(data)
+                const favoriteChatList = data.filter((chat) => chat.participants.some((p) => p.user === userInfo?.user))
+                setChatList(favoriteChatList)
             }
         }
         fetchChatList()
-    }, [])
+    }, [userInfo?.user])
 
     const router = useRouter()
     const [isShowAuthAlert, setIsShowAuthAlert] = useState(false)
-    const { userInfo } = useAuthStore()
     function handleClickConversation(id: number) {
         if (!userInfo) {
             setIsShowAuthAlert(true)
@@ -77,4 +78,4 @@ function ChatList() {
     )
 }
 
-export default ChatList
+export default FavoriteChatList

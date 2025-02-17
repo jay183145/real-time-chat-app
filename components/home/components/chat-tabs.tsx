@@ -1,21 +1,20 @@
 "use client"
 
 import cn from "@/utils/cn"
-import React, { useState } from "react"
+import React from "react"
 
-function Favorite() {
-    const [activeTab, setActiveTab] = useState("收藏")
+type ChatTabsProps = {
+    chatTabs: { icon: string; label: string; color: string }[]
+    activeTab: string
+    setActiveTab: React.Dispatch<React.SetStateAction<string>>
+}
+function ChatTabs({ chatTabs, activeTab, setActiveTab }: ChatTabsProps) {
     const handleTabClick = (tab: string) => {
         setActiveTab(tab)
     }
     return (
         <div className="mb-4 flex justify-between">
-            {[
-                { icon: "⭐", label: "收藏", color: "text-yellow-500" },
-                { icon: "🔥", label: "熱門", color: "text-red-500" },
-                { icon: "💝", label: "交友", color: "text-pink-500" },
-                { icon: "📻", label: "廣播", color: "text-blue-500" },
-            ].map((item) => (
+            {chatTabs.map((item) => (
                 <button
                     key={item.label}
                     className={cn(
@@ -32,4 +31,4 @@ function Favorite() {
     )
 }
 
-export default Favorite
+export default ChatTabs
