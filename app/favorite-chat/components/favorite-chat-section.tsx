@@ -10,10 +10,14 @@ function FavoriteChatSection() {
     const [isShowAuthAlert, setIsShowAuthAlert] = useState(!userInfo)
 
     return (
-        <div className="mx-auto mt-4 w-[400px] rounded-xl bg-primary-1 p-4">
-            <FavoriteChatList />
+        <>
+            {userInfo && (
+                <div className="mx-auto mt-4 w-[400px] rounded-xl bg-primary-1 p-4">
+                    <FavoriteChatList />
+                </div>
+            )}
             <AuthAlert isShow={isShowAuthAlert} setIsShow={setIsShowAuthAlert} />
-        </div>
+        </>
     )
 }
 

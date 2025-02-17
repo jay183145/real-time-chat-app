@@ -23,7 +23,9 @@ function AuthAlert({ isShow, setIsShow }: AuthAlertProps) {
     function handleCancel() {
         closeAllModals()
         setIsShow(false)
+        router.push("/")
     }
+
     return (
         isShow && (
             <BaseModal>
