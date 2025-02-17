@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { useAuthStore } from "@/lib/auth/auth-store"
 import AuthAlert from "../../auth/alert"
 import cn from "@/utils/cn"
+import dayjs from "dayjs"
 
 function FavoriteChatList() {
     const [chatList, setChatList] = useState<Conversation[]>([])
@@ -40,7 +41,9 @@ function FavoriteChatList() {
         <ul className="space-y-4">
             {chatList.map((chat) => {
                 const participantsNames = chat.participants.map((p) => p.user).join(", ")
-                const participantNumber = `和其他${chat.participants.length > 3 ? ` ${chat.participants.length - 3} ` : ""}人也在線上`
+                // 暫時改成需求的時間
+                // const participantNumber = `和其他${chat.participants.length > 3 ? ` ${chat.participants.length - 3} ` : ""}人也在線上`
+                const activeTime = dayjs(chat.timestamp).format("MM/DD HH:mm")
                 return (
                     <li
                         onClick={() => handleClickConversation(chat.id)}
@@ -53,8 +56,8 @@ function FavoriteChatList() {
                         <div className="flex w-[200px] flex-col items-start justify-start">
                             <div className="flex w-[200px] items-center justify-between">
                                 <p className="truncate text-sm font-semibold text-neutral-200">{participantsNames}</p>
-                                <div className="text-nowrap px-2 text-xs font-semibold text-neutral-50">
-                                    {participantNumber}
+                                <div className="flex items-center gap-1 text-nowrap px-2 text-xs font-semibold text-neutral-300">
+                                    <span>{activeTime}</span>
                                 </div>
                             </div>
                             <p className="w-[200px] truncate text-sm text-neutral-500">{chat.lastMessage}</p>
