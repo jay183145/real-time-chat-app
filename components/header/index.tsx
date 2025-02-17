@@ -25,11 +25,11 @@ function Header({ title }: HeaderProps) {
 
     return (
         <header className="flex items-center justify-between bg-primary-5 p-4 text-neutral-800">
-            <button className="px-4 py-1">
+            <button className="w-[68px] px-4 py-1">
                 <Menu className="h-6 w-6" />
             </button>
             <div className="text-xl font-bold">{title}</div>
-            <div className="flex items-center gap-2">
+            <div className="flex w-[68px] items-center gap-2">
                 <Moon className="h-4 w-4" />
                 <Switch checked={isDark} onCheckedChange={handleThemeChange} />
             </div>
