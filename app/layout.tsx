@@ -32,7 +32,13 @@ export default async function RootLayout({
         <html lang="en">
             <body
                 data-theme={currentTheme?.value}
-                className={` ${geistSans.variable} ${geistMono.variable} antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                style={{
+                    backgroundImage: "url('/chat-bg.jpg')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                }}
             >
                 <div className="mx-auto flex h-screen max-w-md flex-col bg-neutral-700">
                     <AuthProvider>{children}</AuthProvider>
