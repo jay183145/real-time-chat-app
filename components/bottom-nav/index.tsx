@@ -14,8 +14,7 @@ function BottomNav() {
                 {[
                     { icon: Home, label: "首頁", href: "/" },
                     { icon: Activity, label: "動態", href: "/activity" },
-                    // 目前暫時 用 1 - 10 隨機去聊天室之後用個人聊天室列表取代
-                    { icon: MessageCircle, label: "聊天", href: `/chat/${Math.floor(Math.random() * 10) + 1}` },
+                    { icon: MessageCircle, label: "聊天", href: `/favorite-chat` },
                     { icon: CircleUserRound, label: "個人", href: "/profile" },
                 ].map((item) => (
                     <Link href={item.href} key={item.label} className="flex flex-col items-center gap-1 px-4">
