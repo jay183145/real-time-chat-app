@@ -9,7 +9,6 @@ import { useAuthStore } from "@/lib/auth/auth-store"
 import AuthAlert from "../auth/alert"
 
 function ChatList() {
-    // 取得聊天室列表
     const [chatList, setChatList] = useState<Conversation[]>([])
 
     useEffect(() => {
@@ -24,14 +23,12 @@ function ChatList() {
         fetchChatList()
     }, [])
 
-    // 前往聊天室
     const router = useRouter()
     const [isShowAuthAlert, setIsShowAuthAlert] = useState(false)
     const { userInfo } = useAuthStore()
     function handleClickConversation(id: number) {
         if (!userInfo) {
             setIsShowAuthAlert(true)
-            console.log("尚未登入")
             return
         }
         router.push(`/chat/${id}`)
@@ -39,7 +36,6 @@ function ChatList() {
 
     return (
         <ul className="space-y-4">
-            <div className="">一起加入聊天吧 !</div>
             {chatList.map((chat) => {
                 const participantsNames = chat.participants.map((p) => p.user).join(", ")
                 const participantNumber = `和其他${chat.participants.length > 3 ? ` ${chat.participants.length - 3} ` : ""}人也在線上`
