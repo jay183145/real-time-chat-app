@@ -177,7 +177,7 @@ function MessageSection({ conversationId }: MessageSectionProps) {
                             {/* 反應 */}
                             {Object.keys(msg.reactions).length > 0 && (
                                 <div
-                                    className={`mt-1 flex gap-2 text-sm ${
+                                    className={`mt-1 flex gap-2 text-sm motion-translate-y-in-100 motion-blur-in-md motion-opacity-in-0 ${
                                         isCurrentUser ? "justify-end" : "justify-start"
                                     }`}
                                 >
