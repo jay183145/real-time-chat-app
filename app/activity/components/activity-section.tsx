@@ -20,7 +20,7 @@ function ActivitySection() {
     }, [])
 
     return (
-        <div className="mx-auto mt-4 flex w-[370px] flex-col items-center justify-center gap-5 rounded-xl bg-primary-1 p-4">
+        <div className="mx-auto my-4 flex w-[370px] flex-col items-center justify-center gap-5 rounded-xl bg-primary-1 p-4">
             {users.map((user) => (
                 <div
                     key={user.id}
