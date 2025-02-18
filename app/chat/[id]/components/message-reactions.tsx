@@ -29,44 +29,53 @@ function MessageReactions({ reactions, messageId, isCurrentUser, setMessages }: 
     const [animatingMessageId, setAnimatingMessageId] = useState<{ messageId: string; reaction: string } | null>(null)
     const [messagesHasReactionBefore, setMessagesHasReactionBefore] = useState<MessageHasReactionBefore[]>([])
 
-    function handleReactionClick(messageId: string, reaction: ReactionType) {
+    const updateReaction = (messageId: string, reaction: ReactionType, hasReacted: boolean) => {
         setMessages((prevMessages) =>
             prevMessages.map((msg) => {
                 if (msg._id !== messageId) return msg
 
-                const userReactions = messagesHasReactionBefore.find((item) => item.messageId === messageId)
-                const hasReacted = userReactions?.reactions.includes(reaction)
                 const updatedReactions = { ...msg.reactions }
 
                 if (hasReacted) {
-                    // 取消反應
                     updatedReactions[reaction] = (updatedReactions[reaction] || 0) - 1
-                    setMessagesHasReactionBefore((prev) =>
-                        prev.map((item) =>
-                            item.messageId === messageId
-                                ? { ...item, reactions: item.reactions.filter((r) => r !== reaction) }
-                                : item,
-                        ),
-                    )
                 } else {
-                    // 新增反應
                     updatedReactions[reaction] = (updatedReactions[reaction] || 0) + 1
-                    setMessagesHasReactionBefore((prev) => {
-                        const existingIndex = prev.findIndex((item) => item.messageId === messageId)
-                        const newReactions = [...(userReactions?.reactions || []), reaction]
-
-                        if (existingIndex !== -1) {
-                            return prev.map((item) =>
-                                item.messageId === messageId ? { ...item, reactions: newReactions } : item,
-                            )
-                        }
-                        return [...prev, { messageId, reactions: newReactions }]
-                    })
                 }
 
                 return { ...msg, reactions: updatedReactions }
             }),
         )
+    }
+
+    const handleReactionClick = (messageId: string, reaction: ReactionType) => {
+        const userReactions = messagesHasReactionBefore.find((item) => item.messageId === messageId)
+        const hasReacted = userReactions?.reactions.includes(reaction)
+
+        if (hasReacted) {
+            // 取消反應
+            setMessagesHasReactionBefore((prev) =>
+                prev.map((item) =>
+                    item.messageId === messageId
+                        ? { ...item, reactions: item.reactions.filter((r) => r !== reaction) }
+                        : item,
+                ),
+            )
+        } else {
+            // 新增反應
+            setMessagesHasReactionBefore((prev) => {
+                const existingIndex = prev.findIndex((item) => item.messageId === messageId)
+                const newReactions = [...(userReactions?.reactions || []), reaction]
+
+                if (existingIndex !== -1) {
+                    return prev.map((item) =>
+                        item.messageId === messageId ? { ...item, reactions: newReactions } : item,
+                    )
+                }
+                return [...prev, { messageId, reactions: [reaction] }]
+            })
+        }
+
+        updateReaction(messageId, reaction, !!hasReacted)
     }
 
     return (
