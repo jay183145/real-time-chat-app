@@ -16,7 +16,7 @@ function FavoriteChatSection() {
                     <FavoriteChatList />
                 </div>
             )}
-            <AuthAlert isShow={isShowAuthAlert} setIsShow={setIsShowAuthAlert} />
+            {isShowAuthAlert && <AuthAlert isShow={isShowAuthAlert} setIsShow={setIsShowAuthAlert} />}
         </>
     )
 }

@@ -93,7 +93,7 @@ function HotChatList() {
                         </li>
                     )
                 })}
-            <AuthAlert isShow={isShowAuthAlert} setIsShow={setIsShowAuthAlert} />
+            {isShowAuthAlert && <AuthAlert isShow={isShowAuthAlert} setIsShow={setIsShowAuthAlert} />}
         </ul>
     )
 }
