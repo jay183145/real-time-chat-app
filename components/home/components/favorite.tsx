@@ -42,9 +42,9 @@ function FavoriteChatList() {
     }
 
     return (
-        <ul className="min-h-screen space-y-4">
+        <ul className="space-y-4">
             {loading && (
-                <div className="m-auto flex min-h-full w-full items-start justify-center pt-[20vh]">
+                <div className="m-auto flex min-h-full w-full items-start justify-center py-[20vh]">
                     <Loading className="h-16 w-16" />
                 </div>
             )}
