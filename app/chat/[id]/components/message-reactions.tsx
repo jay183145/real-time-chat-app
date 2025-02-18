@@ -16,94 +16,77 @@ type MessageReactionsProps = {
     setMessages: React.Dispatch<React.SetStateAction<Message[]>>
 }
 
+// 定義常數
+const REACTION_ICONS = {
+    like: { Icon: ThumbsUp, activeColor: "text-primary-4" },
+    love: { Icon: Heart, activeColor: "text-red-500" },
+    laugh: { Icon: Smile, activeColor: "text-yellow-500" },
+} as const
+
+type ReactionType = keyof typeof REACTION_ICONS
+
 function MessageReactions({ reactions, messageId, isCurrentUser, setMessages }: MessageReactionsProps) {
     const [animatingMessageId, setAnimatingMessageId] = useState<{ messageId: string; reaction: string } | null>(null)
     const [messagesHasReactionBefore, setMessagesHasReactionBefore] = useState<MessageHasReactionBefore[]>([])
 
-    function handleReactionClick(messageId: string, reaction: string) {
-        setMessages((prevMessages: Message[]) =>
-            prevMessages.map((msg: Message) => {
-                // 找到按反應的訊息
-                if (msg._id === messageId) {
-                    // 判斷是否已按過反應
-                    const idHasReactionBefore = messagesHasReactionBefore.find((item) => item.messageId === messageId)
-                    if (idHasReactionBefore) {
-                        // 判斷是否已按過同 ID 其他反應
-                        const reactionHasReactionBefore = idHasReactionBefore?.reactions.includes(
-                            reaction as keyof typeof msg.reactions,
-                        )
-                        if (reactionHasReactionBefore) {
-                            // 使用者已經按過反應，則取消反應
-                            const newReactionObj: MessageHasReactionBefore = {
-                                messageId,
-                                reactions: idHasReactionBefore.reactions.filter((item) => item !== reaction),
-                            }
-                            setMessagesHasReactionBefore((prev) =>
-                                prev.map((item) => (item.messageId === messageId ? newReactionObj : item)),
-                            )
-                            // 更新反應數量
-                            const updatedReactions = { ...msg.reactions }
+    function handleReactionClick(messageId: string, reaction: ReactionType) {
+        setMessages((prevMessages) =>
+            prevMessages.map((msg) => {
+                if (msg._id !== messageId) return msg
 
-                            updatedReactions[reaction as keyof typeof msg.reactions] =
-                                (updatedReactions[reaction as keyof typeof msg.reactions] || 0) - 1
+                const userReactions = messagesHasReactionBefore.find((item) => item.messageId === messageId)
+                const hasReacted = userReactions?.reactions.includes(reaction)
+                const updatedReactions = { ...msg.reactions }
 
-                            return { ...msg, reactions: updatedReactions }
-                        }
-                    }
-
-                    // 使用者未按過反應，則增加反應
-                    const newReactionObj: MessageHasReactionBefore = {
-                        messageId,
-                        reactions: [...(idHasReactionBefore?.reactions || []), reaction as keyof typeof msg.reactions],
-                    }
+                if (hasReacted) {
+                    // 取消反應
+                    updatedReactions[reaction] = (updatedReactions[reaction] || 0) - 1
+                    setMessagesHasReactionBefore((prev) =>
+                        prev.map((item) =>
+                            item.messageId === messageId
+                                ? { ...item, reactions: item.reactions.filter((r) => r !== reaction) }
+                                : item,
+                        ),
+                    )
+                } else {
+                    // 新增反應
+                    updatedReactions[reaction] = (updatedReactions[reaction] || 0) + 1
                     setMessagesHasReactionBefore((prev) => {
                         const existingIndex = prev.findIndex((item) => item.messageId === messageId)
-                        if (existingIndex !== -1) {
-                            // 使用者有按過同 ID 其他反應，則將原本的 object 以 newReactionObj 更新
-                            return prev.map((item) => (item.messageId === messageId ? newReactionObj : item))
-                        }
-                        // 使用者未按過同 ID 其他反應，則增加 newReactionObj
-                        return [...prev, newReactionObj]
-                    })
-                    // 更新反應數量
-                    const updatedReactions = { ...msg.reactions }
+                        const newReactions = [...(userReactions?.reactions || []), reaction]
 
-                    updatedReactions[reaction as keyof typeof msg.reactions] =
-                        (updatedReactions[reaction as keyof typeof msg.reactions] || 0) + 1
-                    return { ...msg, reactions: updatedReactions }
+                        if (existingIndex !== -1) {
+                            return prev.map((item) =>
+                                item.messageId === messageId ? { ...item, reactions: newReactions } : item,
+                            )
+                        }
+                        return [...prev, { messageId, reactions: newReactions }]
+                    })
                 }
 
-                return msg
+                return { ...msg, reactions: updatedReactions }
             }),
         )
     }
 
     return (
         <div
-            className={`mt-1 flex gap-2 text-sm motion-translate-y-in-100 motion-blur-in-md motion-opacity-in-0 ${isCurrentUser ? "justify-end" : "justify-start"}`}
+            className={`mt-1 flex gap-2 text-sm motion-translate-y-in-100 motion-blur-in-md motion-opacity-in-0 ${
+                isCurrentUser ? "justify-end" : "justify-start"
+            }`}
         >
             {Object.entries(reactions).map(([reactionType, count]) => {
                 const userReaction = messagesHasReactionBefore.find((item) => item.messageId === messageId)
-                const hasReacted = userReaction?.reactions.includes(reactionType as "like" | "love" | "laugh")
-
-                const reactionIcons = {
-                    like: { Icon: ThumbsUp, activeColor: "text-primary-4" },
-                    love: { Icon: Heart, activeColor: "text-red-500" },
-                    laugh: { Icon: Smile, activeColor: "text-yellow-500" },
-                }
-
-                const { Icon, activeColor } = reactionIcons[reactionType as keyof typeof reactionIcons]
-
+                const hasReacted = userReaction?.reactions.includes(reactionType as ReactionType)
+                const { Icon, activeColor } = REACTION_ICONS[reactionType as ReactionType]
                 const isAnimating =
                     animatingMessageId?.messageId === messageId && animatingMessageId?.reaction === reactionType
 
                 const handleClick = () => {
-                    handleReactionClick(messageId, reactionType)
+                    handleReactionClick(messageId, reactionType as ReactionType)
                     if (!hasReacted) {
                         setAnimatingMessageId({ messageId, reaction: reactionType })
-                        setTimeout(() => {
-                            setAnimatingMessageId(null)
-                        }, 1000)
+                        setTimeout(() => setAnimatingMessageId(null), 1000)
                     }
                 }
 
